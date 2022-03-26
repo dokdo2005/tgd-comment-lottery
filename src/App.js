@@ -96,8 +96,7 @@ function App() {
                 </Col>
               </Row>
               <Row>
-                <Form.Text>게시물 주소를 입력해주세요.</Form.Text>
-                <Form.Text>ex) https://tgd.kr/s/se_0n/62744799</Form.Text>
+                <Form.Text>게시물 주소를 입력해주세요. ex) https://tgd.kr/s/se_0n/62744799</Form.Text>
               </Row>
               <Row>&nbsp;</Row>
               <Row><Col><b>전체 목록</b></Col></Row>
@@ -118,7 +117,6 @@ function App() {
               </Row>
               <Row>
                 <Form.Text>추첨 할 인원 수를 입력해주세요.</Form.Text>
-                <Form.Text>&nbsp;</Form.Text>
               </Row>
               <Row>&nbsp;</Row>
               <Row><Col><b>당첨자 목록</b></Col></Row>
