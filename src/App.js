@@ -42,13 +42,16 @@ function App() {
         lotteryNumberRef.current.value = null;
         setLotteryList([]);
       } else {
-        let nicknameTmpArr = [];
+        let newNicknameArr = [];
+        let idListArr = [];
         for (let i in commentList) {
-          if (!nicknameTmpArr.includes(commentList[i].nickname)) {
-            nicknameTmpArr.push(commentList[i].nickname);
+          const userId = commentList[i].user_id;
+          if (!idListArr.includes(userId)) {
+            idListArr.push(userId);
+            newNicknameArr.push(commentList[i]);
           }
         }
-        setNicknameList(nicknameTmpArr);
+        setNicknameList(newNicknameArr);
         setLotteryNumber(null);
         lotteryNumberRef.current.value = null;
         setLotteryList([]);
@@ -66,11 +69,13 @@ function App() {
       alert("추첨 인원 수는 전체 리스트 수 보다 클 수 없습니다.")
     } else {
       let totalList = [];
+      let randomList = [];
       let totalCount = 0;
       setDrawing(true);
       do {
         const lotteryIndex = Math.floor(Math.random() * nicknameList.length);
-        if (!totalList.includes(nicknameList[lotteryIndex])) {
+        if (!randomList.includes(lotteryIndex)) {
+          randomList.push(lotteryIndex);
           totalList.push(nicknameList[lotteryIndex]);
           totalCount++;
         }
@@ -102,7 +107,7 @@ function App() {
               <Row><Col><b>전체 목록</b></Col></Row>
               <ListGroup>
                 {isLoading ? <ListGroup.Item><Spinner animation="border" /></ListGroup.Item> : nicknameList.map((element) => (
-                  <ListGroup.Item>{element}</ListGroup.Item>
+                  <ListGroup.Item>{element.nickname}</ListGroup.Item>
                 ))}
               </ListGroup>
             </Col>
@@ -122,7 +127,7 @@ function App() {
               <Row><Col><b>당첨자 목록</b></Col></Row>
               <ListGroup>
                 {isDrawing ? <ListGroup.Item><Spinner animation="border" /></ListGroup.Item> : lotteryList.map((element) => (
-                  <ListGroup.Item>{element}</ListGroup.Item>
+                  <ListGroup.Item>{element.nickname}</ListGroup.Item>
                 ))}
               </ListGroup>
             </Col>
