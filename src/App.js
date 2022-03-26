@@ -296,7 +296,7 @@ function App() {
       </Container>
       <div>
         <div>&nbsp;</div>
-        <div>Made By 김뷰엘 with ❤️</div>
+        <div>Made by 김뷰엘 with ❤️</div>
       </div>
     </div>
   );
