@@ -90,7 +90,6 @@ function App() {
             <Row>&nbsp;</Row>
             <Row><Col><b>전체 목록</b></Col></Row>
             <ListGroup>
-              {nicknameList.length === 0 ? <ListGroup.Item>&nbsp;</ListGroup.Item> : null}
               {isLoading ? <ListGroup.Item><Spinner animation="border" /></ListGroup.Item> : nicknameList.map((element) => (
                 <ListGroup.Item>{element}</ListGroup.Item>
               ))}
@@ -112,7 +111,6 @@ function App() {
             <Row>&nbsp;</Row>
             <Row><Col><b>당첨자 목록</b></Col></Row>
             <ListGroup>
-              {lotteryList.length === 0 ? <ListGroup.Item>&nbsp;</ListGroup.Item> : null}
               {isDrawing ? <ListGroup.Item><Spinner animation="border" /></ListGroup.Item> : lotteryList.map((element) => (
                 <ListGroup.Item>{element}</ListGroup.Item>
               ))}
