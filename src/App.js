@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { Spinner, Button, Col, Form, Row } from 'react-bootstrap';
 import axios from 'axios';
 
 function App() {
@@ -6,17 +7,25 @@ function App() {
   const [lotteryList, setLotteryList] = useState([]);
   const [boardNumber, setBoardNumber] = useState(null);
   const [lotteryNumber, setLotteryNumber] = useState(null);
+  const [isLoading, setLoading] = useState(false);
+  const [isDrawing, setDrawing] = useState(false);
   const boardNumberRef = useRef();
   const lotteryNumberRef = useRef();
 
   const getCommentList = async (boardId) => {
-    if (!boardId) {
+    if (!boardId || boardId === "0") {
       alert('게시물 ID를 입력해주세요!');
+      setNicknameList([]);
+      setLotteryNumber(null);
+      lotteryNumberRef.current.value = null;
+      setLotteryList([]);
     } else {
+      setLoading(true);
       const commentData = await axios.get(`https://i4eu2tbrk6.execute-api.ap-northeast-2.amazonaws.com/production/${boardId}`);
       const commentList = commentData.data.data;
       if (commentList.length === 0) {
         alert('작성 된 댓글이 없습니다!');
+        setLoading(false);
       } else {
         let nicknameTmpArr = [];
         for (let i in commentList) {
@@ -28,6 +37,7 @@ function App() {
         setLotteryNumber(null);
         lotteryNumberRef.current.value = null;
         setLotteryList([]);
+        setLoading(false);
       }
     }
   };
@@ -42,6 +52,7 @@ function App() {
     } else {
       let totalList = [];
       let totalCount = 0;
+      setDrawing(true);
       do {
         const lotteryIndex = Math.floor(Math.random() * nicknameList.length);
         if (!totalList.includes(nicknameList[lotteryIndex])) {
@@ -50,26 +61,51 @@ function App() {
         }
       } while (totalCount < Number(lotteryCount));
       setLotteryList(totalList);
+      setDrawing(false);
     }
   }
 
   return (
     <div className="App">
       <h1>트게더 댓글 추첨기</h1>
-      <input ref={boardNumberRef} placeholder={'게시물 ID 입력'} onChange={() => setBoardNumber(boardNumberRef.current.value)} />
-      <button onClick={() => getCommentList(boardNumber)}>전체 리스트 가져오기</button>
-      <ul>
-        {nicknameList.map((element) => (
-          <li>{element}</li>
-        ))}
-      </ul>
-      <input ref={lotteryNumberRef} placeholder={'당첨 인원 수 입력'} onChange={() => setLotteryNumber(lotteryNumberRef.current.value)} />
-      <button onClick={() => getLotteryList(lotteryNumber)}>추첨하기</button>
-      <ul>
-        {lotteryList.map((element) => (
-          <li>{element}</li>
-        ))}
-      </ul>
+      <Form.Group>
+        <Row>
+          <Col>
+            <Row>
+              <Col>
+                <Form.Control ref={boardNumberRef} placeholder={'게시물 ID 입력'} onChange={() => setBoardNumber(boardNumberRef.current.value)} />
+              </Col>
+              <Col>
+                <Button onClick={() => getCommentList(boardNumber)}>가져오기</Button>
+              </Col>
+            </Row>
+            <Row>
+              <Form.Text>게시물 주소 맨 뒤에 있는 숫자를 입력해주세요.</Form.Text>
+              <Form.Text>ex) 게시물 주소가 https://tgd.kr/s/se_0n/62744799인 경우 62744799 입력</Form.Text>
+            </Row>
+            <Row>
+                {isLoading ? <Row><Col><Spinner animation="border" /></Col></Row> : nicknameList.map((element) => (
+                  <Row><Col>{element}</Col></Row>
+                ))}
+            </Row>
+          </Col>
+          <Col>
+            <Row>
+              <Col>
+                <Form.Control ref={lotteryNumberRef} placeholder={'당첨 인원 수 입력'} onChange={() => setLotteryNumber(lotteryNumberRef.current.value)} />
+              </Col>
+              <Col>
+                <Button onClick={() => getLotteryList(lotteryNumber)}>추첨하기</Button>
+              </Col>
+            </Row>
+            <Row>
+                {isDrawing ? <Row><Col><Spinner animation="border" /></Col></Row> : lotteryList.map((element) => (
+                  <Row><Col>{element}</Col></Row>
+                ))}
+            </Row>
+          </Col>
+        </Row>
+      </Form.Group>
     </div>
   );
 }
