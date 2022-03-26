@@ -136,6 +136,7 @@ function App() {
                     boardUrl && isLoadingDone && (excludeStreamer || excludeMod)
                   }
                   placeholder={"게시물 주소 입력"}
+                  style={{ width: "100%" }}
                   onChange={() => setBoardUrl(boardUrlRef.current.value)}
                 />
               </Col>
@@ -147,6 +148,7 @@ function App() {
                       isLoadingDone &&
                       (excludeStreamer || excludeMod))
                   }
+                  style={{ width: "100%" }}
                   onClick={() => getCommentList(boardUrl)}
                 >
                   <FontAwesomeIcon icon={faFileDownload} />
@@ -225,6 +227,7 @@ function App() {
                     nicknameList.length <= 1
                   }
                   placeholder={"추첨 인원 수 입력"}
+                  style={{ width: "100%" }}
                   onChange={() =>
                     setLotteryNumber(lotteryNumberRef.current.value)
                   }
@@ -241,6 +244,7 @@ function App() {
                     Number(lotteryNumber) > nicknameList.length ||
                     nicknameList.length <= 1
                   }
+                  style={{ width: "100%" }}
                   onClick={() => getLotteryList(lotteryNumber)}
                 >
                   <FontAwesomeIcon icon={faShuffle} />
