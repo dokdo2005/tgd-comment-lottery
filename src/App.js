@@ -24,8 +24,6 @@ function App() {
   const [isDrawing, setDrawing] = useState(false);
   const boardUrlRef = useRef();
   const lotteryNumberRef = useRef();
-  const streamerRef = useRef();
-  const modRef = useRef();
 
   const getCommentList = async (boardUrl) => {
     const validateUrl = /https?:\/\/(www.)?tgd.kr\/s\//g.test(boardUrl);
@@ -59,10 +57,12 @@ function App() {
         let newNicknameArr = [];
         let idListArr = [];
         for (let i in commentList) {
-          const userId = commentList[i].user_id;
-          if (!idListArr.includes(userId)) {
-            idListArr.push(userId);
-            newNicknameArr.push(commentList[i]);
+          const { user_id, streamer, moderator } = commentList[i];
+          if (!(excludeStreamer && streamer) && !(excludeMod && moderator)) {
+            if (!idListArr.includes(user_id)) {
+              idListArr.push(user_id);
+              newNicknameArr.push(commentList[i]);
+            }
           }
         }
         setNicknameList(newNicknameArr);
@@ -124,6 +124,24 @@ function App() {
               <Form.Text>
                 게시물 주소를 입력해주세요. ex) https://tgd.kr/s/se_0n/62744799
               </Form.Text>
+            </Row>
+            <Row>
+              <Col>
+                <Form.Check
+                  type={"switch"}
+                  label={"목록에서 스트리머 제외하기"}
+                  checked={excludeStreamer}
+                  onChange={() => setStreamerExec(!excludeStreamer)}
+                />
+              </Col>
+              <Col>
+                <Form.Check
+                  type={"switch"}
+                  label={"목록에서 매니저 제외하기"}
+                  checked={excludeMod}
+                  onChange={() => setModExec(!excludeMod)}
+                />
+              </Col>
             </Row>
             <Row>&nbsp;</Row>
             <Row>
