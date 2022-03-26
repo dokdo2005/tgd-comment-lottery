@@ -160,7 +160,14 @@ function App() {
                 </ListGroup.Item>
               ) : (
                 nicknameList.map((element) => (
-                  <ListGroup.Item>{element.nickname}</ListGroup.Item>
+                  <ListGroup.Item>
+                    <img
+                      src={element.profile}
+                      width={30.8}
+                      style={{ borderRadius: "50%" }}
+                    />
+                    &nbsp;&nbsp;{element.nickname}
+                  </ListGroup.Item>
                 ))
               )}
             </ListGroup>
@@ -205,7 +212,14 @@ function App() {
                 </ListGroup.Item>
               ) : (
                 lotteryList.map((element) => (
-                  <ListGroup.Item>{element.nickname}</ListGroup.Item>
+                  <ListGroup.Item>
+                    <img
+                      src={element.profile}
+                      width={30.8}
+                      style={{ borderRadius: "50%" }}
+                    />
+                    &nbsp;&nbsp;{element.nickname}
+                  </ListGroup.Item>
                 ))
               )}
             </ListGroup>
