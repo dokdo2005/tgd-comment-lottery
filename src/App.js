@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import {
-  Spinner,
   Button,
   Col,
   Form,
@@ -12,8 +11,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileDownload, faShuffle } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import "./css/App.css";
-import streamerIcon from "./img/streamer_icon.png";
-import moderatorIcon from "./img/moderator_icon.png";
+import LotteryListEntry from "./components/lotteryListEntry";
+import SpinnerComponent from "./components/spinnerComponent";
 
 function App() {
   const [nicknameList, setNicknameList] = useState([]);
@@ -192,25 +191,10 @@ function App() {
             ) : null}
             <ListGroup>
               {isLoading ? (
-                <ListGroup.Item>
-                  <Spinner animation="border" />
-                </ListGroup.Item>
+                <SpinnerComponent />
               ) : (
                 nicknameList.map((element) => (
-                  <ListGroup.Item key={element.id}>
-                    <img
-                      src={element.profile}
-                      width={30.8}
-                      style={{ borderRadius: "50%" }}
-                    />
-                    &nbsp;
-                    {element.broadcaster || element.moderator ? (
-                      <img
-                        src={element.broadcaster ? streamerIcon : moderatorIcon}
-                      />
-                    ) : null}
-                    &nbsp;{element.nickname}
-                  </ListGroup.Item>
+                  <LotteryListEntry entry={element} />
                 ))
               )}
             </ListGroup>
@@ -269,25 +253,10 @@ function App() {
             ) : null}
             <ListGroup>
               {isDrawing ? (
-                <ListGroup.Item>
-                  <Spinner animation="border" />
-                </ListGroup.Item>
+                <SpinnerComponent />
               ) : (
                 lotteryList.map((element) => (
-                  <ListGroup.Item key={element.id}>
-                    <img
-                      src={element.profile}
-                      width={30.8}
-                      style={{ borderRadius: "50%" }}
-                    />
-                    &nbsp;
-                    {element.broadcaster || element.moderator ? (
-                      <img
-                        src={element.broadcaster ? streamerIcon : moderatorIcon}
-                      />
-                    ) : null}
-                    &nbsp;{element.nickname}
-                  </ListGroup.Item>
+                  <LotteryListEntry entry={element} />
                 ))
               )}
             </ListGroup>
