@@ -143,12 +143,16 @@ function App() {
                 />
               </Col>
             </Row>
-            <Row>&nbsp;</Row>
-            <Row>
-              <Col>
-                <b>전체 목록</b>
-              </Col>
-            </Row>
+            {isLoading || nicknameList.length > 0 ? (
+              <>
+                <Row>&nbsp;</Row>
+                <Row>
+                  <Col>
+                    <b>전체 목록</b>
+                  </Col>
+                </Row>
+              </>
+            ) : null}
             <ListGroup>
               {isLoading ? (
                 <ListGroup.Item>
@@ -181,12 +185,19 @@ function App() {
             <Row>
               <Form.Text>추첨 할 인원 수를 입력해주세요.</Form.Text>
             </Row>
-            <Row>&nbsp;</Row>
-            <Row>
-              <Col>
-                <b>당첨자 목록</b>
-              </Col>
-            </Row>
+            {isDrawing || lotteryList.length > 0 ? (
+              <>
+                <Row>&nbsp;</Row>
+                <Row>
+                  <Col>
+                    <b>당첨자 목록</b>
+                  </Col>
+                </Row>
+                <Row>
+                  <Form.Text>당첨을 축하합니다!</Form.Text>
+                </Row>
+              </>
+            ) : null}
             <ListGroup>
               {isDrawing ? (
                 <ListGroup.Item>
