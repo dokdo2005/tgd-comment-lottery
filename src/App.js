@@ -12,6 +12,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileDownload, faShuffle } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import "./css/App.css";
+import streamerIcon from "./img/streamer_icon.png";
+import moderatorIcon from "./img/moderator_icon.png";
 
 function App() {
   const [nicknameList, setNicknameList] = useState([]);
@@ -25,11 +27,6 @@ function App() {
   const [isLoadingDone, setLoadingDone] = useState(false);
   const boardUrlRef = useRef();
   const lotteryNumberRef = useRef();
-
-  const streamerIcon =
-    "https://static-cdn.jtvnw.net/badges/v1/5527c58c-fb7d-422d-b71b-f309dcb85cc1/1";
-  const moderatorIcon =
-    "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/1";
 
   const getCommentList = async (boardUrl) => {
     const validateUrl = /https?:\/\/(www.)?tgd.kr\/s\//g.test(boardUrl);
