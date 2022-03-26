@@ -11,7 +11,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileDownload, faShuffle } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import "./App.css";
+import "./css/App.css";
 
 function App() {
   const [nicknameList, setNicknameList] = useState([]);
@@ -25,6 +25,11 @@ function App() {
   const [isLoadingDone, setLoadingDone] = useState(false);
   const boardUrlRef = useRef();
   const lotteryNumberRef = useRef();
+
+  const streamerIcon =
+    "https://static-cdn.jtvnw.net/badges/v1/5527c58c-fb7d-422d-b71b-f309dcb85cc1/1";
+  const moderatorIcon =
+    "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/1";
 
   const getCommentList = async (boardUrl) => {
     const validateUrl = /https?:\/\/(www.)?tgd.kr\/s\//g.test(boardUrl);
@@ -199,7 +204,13 @@ function App() {
                       width={30.8}
                       style={{ borderRadius: "50%" }}
                     />
-                    &nbsp;&nbsp;{element.nickname}
+                    &nbsp;
+                    {element.broadcaster || element.moderator ? (
+                      <img
+                        src={element.broadcaster ? streamerIcon : moderatorIcon}
+                      />
+                    ) : null}
+                    &nbsp;{element.nickname}
                   </ListGroup.Item>
                 ))
               )}
@@ -268,7 +279,13 @@ function App() {
                       width={30.8}
                       style={{ borderRadius: "50%" }}
                     />
-                    &nbsp;&nbsp;{element.nickname}
+                    &nbsp;
+                    {element.broadcaster || element.moderator ? (
+                      <img
+                        src={element.broadcaster ? streamerIcon : moderatorIcon}
+                      />
+                    ) : null}
+                    &nbsp;{element.nickname}
                   </ListGroup.Item>
                 ))
               )}
