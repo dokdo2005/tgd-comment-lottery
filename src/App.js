@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Spinner,
   Button,
@@ -22,6 +22,7 @@ function App() {
   const [excludeMod, setModExec] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [isDrawing, setDrawing] = useState(false);
+  const [isLoadingDone, setLoadingDone] = useState(false);
   const boardUrlRef = useRef();
   const lotteryNumberRef = useRef();
 
@@ -40,12 +41,14 @@ function App() {
       lotteryNumberRef.current.value = null;
       setLotteryList([]);
     } else {
+      setLoadingDone(false);
       setLoading(true);
       const boardId = boardUrl.split("/")[5].split("?")[0];
       const commentData = await axios.get(
         `https://i4eu2tbrk6.execute-api.ap-northeast-2.amazonaws.com/production/${boardId}`
       );
       const commentList = commentData.data.data;
+      setLoadingDone(true);
       if (commentList.length === 0) {
         alert("작성 된 댓글이 없습니다!");
         setLoading(false);
@@ -53,6 +56,7 @@ function App() {
         setLotteryNumber(null);
         lotteryNumberRef.current.value = null;
         setLotteryList([]);
+        setLoadingDone(false);
       } else {
         let newNicknameArr = [];
         let idListArr = [];
@@ -99,6 +103,22 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    if (boardUrl && isLoadingDone) getCommentList(boardUrl);
+  }, [excludeStreamer, excludeMod]);
+
+  useEffect(() => {
+    if (!boardUrl) {
+      setNicknameList([]);
+      setLotteryNumber(null);
+      lotteryNumberRef.current.value = null;
+      setLotteryList([]);
+      setStreamerExec(false);
+      setModExec(false);
+      setLoadingDone(false);
+    }
+  }, [boardUrl]);
+
   return (
     <div className="App">
       <h1>트게더 댓글 추첨기</h1>
@@ -110,12 +130,23 @@ function App() {
               <Col xs={10}>
                 <Form.Control
                   ref={boardUrlRef}
+                  disabled={
+                    boardUrl && isLoadingDone && (excludeStreamer || excludeMod)
+                  }
                   placeholder={"게시물 주소 입력"}
                   onChange={() => setBoardUrl(boardUrlRef.current.value)}
                 />
               </Col>
               <Col>
-                <Button onClick={() => getCommentList(boardUrl)}>
+                <Button
+                  disabled={
+                    !boardUrl ||
+                    (boardUrl &&
+                      isLoadingDone &&
+                      (excludeStreamer || excludeMod))
+                  }
+                  onClick={() => getCommentList(boardUrl)}
+                >
                   <FontAwesomeIcon icon={faFileDownload} />
                 </Button>
               </Col>
@@ -129,6 +160,7 @@ function App() {
               <Col>
                 <Form.Check
                   type={"switch"}
+                  disabled={!boardUrl || isLoading}
                   label={"목록에서 스트리머 제외하기"}
                   checked={excludeStreamer}
                   onChange={() => setStreamerExec(!excludeStreamer)}
@@ -137,6 +169,7 @@ function App() {
               <Col>
                 <Form.Check
                   type={"switch"}
+                  disabled={!boardUrl || isLoading}
                   label={"목록에서 매니저 제외하기"}
                   checked={excludeMod}
                   onChange={() => setModExec(!excludeMod)}
@@ -160,7 +193,7 @@ function App() {
                 </ListGroup.Item>
               ) : (
                 nicknameList.map((element) => (
-                  <ListGroup.Item>
+                  <ListGroup.Item key={element.id}>
                     <img
                       src={element.profile}
                       width={30.8}
@@ -177,6 +210,12 @@ function App() {
               <Col xs={10}>
                 <Form.Control
                   ref={lotteryNumberRef}
+                  disabled={
+                    !boardUrl ||
+                    !isLoadingDone ||
+                    isLoading ||
+                    nicknameList.length <= 1
+                  }
                   placeholder={"추첨 인원 수 입력"}
                   onChange={() =>
                     setLotteryNumber(lotteryNumberRef.current.value)
@@ -184,7 +223,18 @@ function App() {
                 />
               </Col>
               <Col>
-                <Button onClick={() => getLotteryList(lotteryNumber)}>
+                <Button
+                  disabled={
+                    !lotteryNumber ||
+                    !isLoadingDone ||
+                    isLoading ||
+                    Number(lotteryNumber) <= 0 ||
+                    !Number.isInteger(Number(lotteryNumber)) ||
+                    Number(lotteryNumber) > nicknameList.length ||
+                    nicknameList.length <= 1
+                  }
+                  onClick={() => getLotteryList(lotteryNumber)}
+                >
                   <FontAwesomeIcon icon={faShuffle} />
                 </Button>
               </Col>
@@ -212,7 +262,7 @@ function App() {
                 </ListGroup.Item>
               ) : (
                 lotteryList.map((element) => (
-                  <ListGroup.Item>
+                  <ListGroup.Item key={element.id}>
                     <img
                       src={element.profile}
                       width={30.8}
