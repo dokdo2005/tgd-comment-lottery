@@ -57,8 +57,8 @@ function App() {
         let newNicknameArr = [];
         let idListArr = [];
         for (let i in commentList) {
-          const { user_id, streamer, moderator } = commentList[i];
-          if (!(excludeStreamer && streamer) && !(excludeMod && moderator)) {
+          const { user_id, broadcaster, moderator } = commentList[i];
+          if (!(excludeStreamer && broadcaster) && !(excludeMod && moderator)) {
             if (!idListArr.includes(user_id)) {
               idListArr.push(user_id);
               newNicknameArr.push(commentList[i]);
