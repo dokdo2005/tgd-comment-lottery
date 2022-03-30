@@ -266,7 +266,6 @@ function App() {
       <div className="footer">
         <div>&nbsp;</div>
         <div>Made by 김뷰엘 with ❤️</div>
-        <dib>Since 2022</dib>
       </div>
     </div>
   );

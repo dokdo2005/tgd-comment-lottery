@@ -4,6 +4,7 @@
   "version": "1.0.1",
   "description": "트게더 게시물에 달린 댓글을 가지고 추첨을 할 수 있는 확장 프로그램입니다.",
   "manifest_version": 3,
+  "action": {},
   "icons": {
     "16": "icon-16.png",
     "48": "icon-48.png",
