@@ -4,7 +4,7 @@ import moderatorIcon from "../img/moderator_icon.png";
 
 function LotteryListEntry({ entry }) {
   return (
-    <ListGroup.Item key={entry.id}>
+    <ListGroup.Item eventKey={entry.id}>
       <img src={entry.profile} width={30.8} style={{ borderRadius: "50%" }} />
       &nbsp;
       {entry.broadcaster || entry.moderator ? (
