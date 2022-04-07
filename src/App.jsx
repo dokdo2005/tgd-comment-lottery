@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Button, Col, Form, Row, ListGroup, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileDownload, faShuffle } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import { commentListApi } from "./features/api";
 import "./css/App.css";
 import LotteryListEntry from "./components/lotteryListEntry";
 import SpinnerComponent from "./components/spinnerComponent";
@@ -39,10 +39,7 @@ function App() {
       setLoadingDone(false);
       setLoading(true);
       const boardId = boardUrl.split("/")[5].split("?")[0];
-      const commentData = await axios.get(
-        `https://i4eu2tbrk6.execute-api.ap-northeast-2.amazonaws.com/production/${boardId}`
-      );
-      const commentList = commentData.data.data;
+      const commentList = await commentListApi(boardId);
       setLoadingDone(true);
       if (commentList.length === 0) {
         alert("작성 된 댓글이 없습니다!");
