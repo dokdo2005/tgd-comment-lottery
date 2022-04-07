@@ -114,7 +114,7 @@ function App() {
       }
       setNicknameList(filteredList);
     }
-  }, [excludeStreamer, excludeMod]);
+  }, [nicknameList, excludeStreamer, excludeMod]);
 
   useEffect(() => {
     if (!boardUrl) {
@@ -167,7 +167,10 @@ function App() {
               <Col>
                 <Form.Check
                   type={"switch"}
-                  disabled={!boardUrl || isLoading}
+                  disabled={
+                    !boardUrl ||
+                    (boardUrl && isLoading && !isLoadingDone)
+                  }
                   label={"목록에서 스트리머 제외하기"}
                   checked={excludeStreamer}
                   onChange={() => setStreamerExec(!excludeStreamer)}
@@ -176,7 +179,10 @@ function App() {
               <Col>
                 <Form.Check
                   type={"switch"}
-                  disabled={!boardUrl || isLoading}
+                  disabled={
+                    !boardUrl ||
+                    (boardUrl && isLoading && !isLoadingDone)
+                  }
                   label={"목록에서 매니저 제외하기"}
                   checked={excludeMod}
                   onChange={() => setModExec(!excludeMod)}
