@@ -48,15 +48,7 @@ function App() {
   };
 
   const getLotteryList = (lotteryCount) => {
-    if (nicknameList.length === 0) {
-      alert("전체 리스트가 비어있습니다!");
-    } else if (!lotteryCount || Number(lotteryCount) === 0) {
-      alert("추첨 인원 수를 입력해주세요!");
-    } else if (Number(lotteryCount) > nicknameList.length) {
-      alert("추첨 인원 수는 전체 리스트 수 보다 클 수 없습니다.");
-    } else {
-      setLotteryList(getLottery(nicknameList, lotteryCount));
-    }
+    setLotteryList(getLottery(nicknameList, lotteryCount));
   };
 
   useEffect(() => {
