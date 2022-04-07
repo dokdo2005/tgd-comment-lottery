@@ -1,12 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import {
-  Button,
-  Col,
-  Form,
-  Row,
-  ListGroup,
-  Container,
-} from "react-bootstrap";
+import { Button, Col, Form, Row, ListGroup, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileDownload, faShuffle } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
@@ -108,7 +101,9 @@ function App() {
       } else if (!excludeStreamer && excludeMod) {
         filteredList = originalList.filter((el) => !el.moderator);
       } else if (excludeStreamer && excludeMod) {
-        filteredList = originalList.filter((el) => !el.broadcaster && !el.moderator);
+        filteredList = originalList.filter(
+          (el) => !el.broadcaster && !el.moderator
+        );
       } else {
         filteredList = originalList.concat([]);
       }
@@ -149,8 +144,7 @@ function App() {
               <Col>
                 <Button
                   disabled={
-                    !boardUrl ||
-                    (boardUrl && isLoading && !isLoadingDone)
+                    !boardUrl || (boardUrl && isLoading && !isLoadingDone)
                   }
                   style={{ width: "100%" }}
                   onClick={() => getCommentList(boardUrl)}
@@ -169,8 +163,7 @@ function App() {
                 <Form.Check
                   type={"switch"}
                   disabled={
-                    !boardUrl ||
-                    (boardUrl && isLoading && !isLoadingDone)
+                    !boardUrl || (boardUrl && isLoading && !isLoadingDone)
                   }
                   label={"목록에서 스트리머 제외하기"}
                   checked={excludeStreamer}
@@ -181,8 +174,7 @@ function App() {
                 <Form.Check
                   type={"switch"}
                   disabled={
-                    !boardUrl ||
-                    (boardUrl && isLoading && !isLoadingDone)
+                    !boardUrl || (boardUrl && isLoading && !isLoadingDone)
                   }
                   label={"목록에서 매니저 제외하기"}
                   checked={excludeMod}
