@@ -3,6 +3,7 @@ import { Button, Col, Form, Row, ListGroup, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileDownload, faShuffle } from "@fortawesome/free-solid-svg-icons";
 import { commentListApi } from "./features/api";
+import { deleteDuplicateNickname } from "./features/getList";
 import "./css/App.css";
 import LotteryListEntry from "./components/lotteryListEntry";
 import SpinnerComponent from "./components/spinnerComponent";
@@ -23,18 +24,8 @@ function App() {
 
   const getCommentList = async (boardUrl) => {
     const validateUrl = /https?:\/\/(www.)?tgd.kr\/s\//g.test(boardUrl);
-    if (!boardUrl || boardUrl === "0") {
-      alert("게시물 주소를 입력해주세요!");
-      setNicknameList([]);
-      setLotteryNumber(null);
-      lotteryNumberRef.current.value = null;
-      setLotteryList([]);
-    } else if (!validateUrl) {
+    if (!validateUrl) {
       alert("올바른 주소가 아닙니다!");
-      setNicknameList([]);
-      setLotteryNumber(null);
-      lotteryNumberRef.current.value = null;
-      setLotteryList([]);
     } else {
       setLoadingDone(false);
       setLoading(true);
@@ -46,15 +37,7 @@ function App() {
         setLoading(false);
         setLoadingDone(false);
       } else {
-        let newNicknameArr = [];
-        let idListArr = [];
-        for (let i in commentList) {
-          const { user_id } = commentList[i];
-          if (!idListArr.includes(user_id)) {
-            idListArr.push(user_id);
-            newNicknameArr.push(commentList[i]);
-          }
-        }
+        const newNicknameArr = deleteDuplicateNickname(commentList);
         setNicknameList(newNicknameArr);
         setOriginalList(newNicknameArr);
         setLotteryNumber(null);
