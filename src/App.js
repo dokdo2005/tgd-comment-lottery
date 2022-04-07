@@ -16,6 +16,7 @@ import SpinnerComponent from "./components/spinnerComponent";
 
 function App() {
   const [nicknameList, setNicknameList] = useState([]);
+  const [originalList, setOriginalList] = useState([]);
   const [lotteryList, setLotteryList] = useState([]);
   const [boardUrl, setBoardUrl] = useState(null);
   const [lotteryNumber, setLotteryNumber] = useState(null);
@@ -53,24 +54,19 @@ function App() {
       if (commentList.length === 0) {
         alert("작성 된 댓글이 없습니다!");
         setLoading(false);
-        setNicknameList([]);
-        setLotteryNumber(null);
-        lotteryNumberRef.current.value = null;
-        setLotteryList([]);
         setLoadingDone(false);
       } else {
         let newNicknameArr = [];
         let idListArr = [];
         for (let i in commentList) {
-          const { user_id, broadcaster, moderator } = commentList[i];
-          if (!(excludeStreamer && broadcaster) && !(excludeMod && moderator)) {
-            if (!idListArr.includes(user_id)) {
-              idListArr.push(user_id);
-              newNicknameArr.push(commentList[i]);
-            }
+          const { user_id } = commentList[i];
+          if (!idListArr.includes(user_id)) {
+            idListArr.push(user_id);
+            newNicknameArr.push(commentList[i]);
           }
         }
         setNicknameList(newNicknameArr);
+        setOriginalList(newNicknameArr);
         setLotteryNumber(null);
         lotteryNumberRef.current.value = null;
         setLotteryList([]);
@@ -105,7 +101,17 @@ function App() {
   };
 
   useEffect(() => {
-    if (boardUrl && isLoadingDone) getCommentList(boardUrl);
+    let filteredList = [];
+    if (excludeStreamer && !excludeMod) {
+      filteredList = originalList.filter((el) => !el.broadcaster);
+    } else if (!excludeStreamer && excludeMod) {
+      filteredList = originalList.filter((el) => !el.moderator);
+    } else if (excludeStreamer && excludeMod) {
+      filteredList = originalList.filter((el) => !el.broadcaster && !el.moderator);
+    } else {
+      filteredList = originalList.concat([]);
+    }
+    setNicknameList(filteredList);
   }, [excludeStreamer, excludeMod]);
 
   useEffect(() => {
@@ -131,9 +137,7 @@ function App() {
               <Col xs={10}>
                 <Form.Control
                   ref={boardUrlRef}
-                  disabled={
-                    boardUrl && isLoadingDone && (excludeStreamer || excludeMod)
-                  }
+                  disabled={boardUrl && isLoadingDone}
                   placeholder={"게시물 주소 입력"}
                   style={{ width: "100%" }}
                   onChange={() => setBoardUrl(boardUrlRef.current.value)}
@@ -143,9 +147,7 @@ function App() {
                 <Button
                   disabled={
                     !boardUrl ||
-                    (boardUrl &&
-                      isLoadingDone &&
-                      (excludeStreamer || excludeMod))
+                    (boardUrl && isLoadingDone)
                   }
                   style={{ width: "100%" }}
                   onClick={() => getCommentList(boardUrl)}
