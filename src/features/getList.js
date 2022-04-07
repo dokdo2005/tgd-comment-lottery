@@ -25,3 +25,21 @@ export const getLottery = (list, count) => {
   } while (totalCount < Number(count));
   return totalList;
 }
+
+export const filterList = (list, excludeStreamer, excludeMod) => {
+  let filteredList = [];
+  if (list.length > 0) {
+    if (excludeStreamer && !excludeMod) {
+      filteredList = list.filter((el) => !el.broadcaster);
+    } else if (!excludeStreamer && excludeMod) {
+      filteredList = list.filter((el) => !el.moderator);
+    } else if (excludeStreamer && excludeMod) {
+      filteredList = list.filter(
+        (el) => !el.broadcaster && !el.moderator
+      );
+    } else {
+      filteredList = list.concat([]);
+    }
+  }
+  return filteredList;
+}

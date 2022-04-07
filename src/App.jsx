@@ -3,7 +3,11 @@ import { Button, Col, Form, Row, ListGroup, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileDownload, faShuffle } from "@fortawesome/free-solid-svg-icons";
 import { commentListApi } from "./features/api";
-import { deleteDuplicateNickname, getLottery } from "./features/getList";
+import {
+  deleteDuplicateNickname,
+  getLottery,
+  filterList,
+} from "./features/getList";
 import "./css/App.css";
 import LotteryListEntry from "./components/lotteryListEntry";
 import SpinnerComponent from "./components/spinnerComponent";
@@ -47,26 +51,8 @@ function App() {
     }
   };
 
-  const getLotteryList = (lotteryCount) => {
-    setLotteryList(getLottery(nicknameList, lotteryCount));
-  };
-
   useEffect(() => {
-    if (originalList.length > 0) {
-      let filteredList = [];
-      if (excludeStreamer && !excludeMod) {
-        filteredList = originalList.filter((el) => !el.broadcaster);
-      } else if (!excludeStreamer && excludeMod) {
-        filteredList = originalList.filter((el) => !el.moderator);
-      } else if (excludeStreamer && excludeMod) {
-        filteredList = originalList.filter(
-          (el) => !el.broadcaster && !el.moderator
-        );
-      } else {
-        filteredList = originalList.concat([]);
-      }
-      setNicknameList(filteredList);
-    }
+    setNicknameList(filterList(originalList, excludeStreamer, excludeMod));
   }, [nicknameList, excludeStreamer, excludeMod]);
 
   useEffect(() => {
@@ -190,7 +176,9 @@ function App() {
                     nicknameList.length <= 1
                   }
                   style={{ width: "100%" }}
-                  onClick={() => getLotteryList(lotteryNumber)}
+                  onClick={() =>
+                    setLotteryList(getLottery(nicknameList, lotteryNumber))
+                  }
                 >
                   <FontAwesomeIcon icon={faShuffle} />
                 </Button>
