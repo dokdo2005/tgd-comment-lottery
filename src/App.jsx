@@ -3,7 +3,7 @@ import { Button, Col, Form, Row, ListGroup, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileDownload, faShuffle } from "@fortawesome/free-solid-svg-icons";
 import { commentListApi } from "./features/api";
-import { deleteDuplicateNickname } from "./features/getList";
+import { deleteDuplicateNickname, getLottery } from "./features/getList";
 import "./css/App.css";
 import LotteryListEntry from "./components/lotteryListEntry";
 import SpinnerComponent from "./components/spinnerComponent";
@@ -17,7 +17,6 @@ function App() {
   const [excludeStreamer, setStreamerExec] = useState(false);
   const [excludeMod, setModExec] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [isDrawing, setDrawing] = useState(false);
   const [isLoadingDone, setLoadingDone] = useState(false);
   const boardUrlRef = useRef();
   const lotteryNumberRef = useRef();
@@ -56,20 +55,7 @@ function App() {
     } else if (Number(lotteryCount) > nicknameList.length) {
       alert("추첨 인원 수는 전체 리스트 수 보다 클 수 없습니다.");
     } else {
-      let totalList = [];
-      let randomList = [];
-      let totalCount = 0;
-      setDrawing(true);
-      do {
-        const lotteryIndex = Math.floor(Math.random() * nicknameList.length);
-        if (!randomList.includes(lotteryIndex)) {
-          randomList.push(lotteryIndex);
-          totalList.push(nicknameList[lotteryIndex]);
-          totalCount++;
-        }
-      } while (totalCount < Number(lotteryCount));
-      setLotteryList(totalList);
-      setDrawing(false);
+      setLotteryList(getLottery(nicknameList, lotteryCount));
     }
   };
 
@@ -221,7 +207,7 @@ function App() {
             <Row>
               <Form.Text>추첨 할 인원 수를 입력해주세요.</Form.Text>
             </Row>
-            {isDrawing || lotteryList.length > 0 ? (
+            {lotteryList.length > 0 ? (
               <>
                 <Row>&nbsp;</Row>
                 <Row>
@@ -235,13 +221,9 @@ function App() {
               </>
             ) : null}
             <ListGroup>
-              {isDrawing ? (
-                <SpinnerComponent />
-              ) : (
-                lotteryList.map((element) => (
-                  <LotteryListEntry entry={element} />
-                ))
-              )}
+              {lotteryList.map((element) => (
+                <LotteryListEntry entry={element} />
+              ))}
             </ListGroup>
           </Col>
         </Row>
