@@ -119,6 +119,7 @@ function App() {
   useEffect(() => {
     if (!boardUrl) {
       setNicknameList([]);
+      setOriginalList([]);
       setLotteryNumber(null);
       lotteryNumberRef.current.value = null;
       setLotteryList([]);
