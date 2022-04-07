@@ -29,7 +29,7 @@ function App() {
     const validateUrl = /https?:\/\/(www.)?tgd.kr\/s\/s/.test(
       boardUrl.split("?")[0]
     );
-    const boardId = boardUrl.split("/")[5];
+    const boardId = boardUrl.split("?")[0].split("/")[5];
     const validateBoardId = /^[1-9][0-9]{7}$/.test(boardId);
 
     if (!validateUrl || !validateBoardId) {
