@@ -101,17 +101,19 @@ function App() {
   };
 
   useEffect(() => {
-    let filteredList = [];
-    if (excludeStreamer && !excludeMod) {
-      filteredList = originalList.filter((el) => !el.broadcaster);
-    } else if (!excludeStreamer && excludeMod) {
-      filteredList = originalList.filter((el) => !el.moderator);
-    } else if (excludeStreamer && excludeMod) {
-      filteredList = originalList.filter((el) => !el.broadcaster && !el.moderator);
-    } else {
-      filteredList = originalList.concat([]);
+    if (originalList.length > 0) {
+      let filteredList = [];
+      if (excludeStreamer && !excludeMod) {
+        filteredList = originalList.filter((el) => !el.broadcaster);
+      } else if (!excludeStreamer && excludeMod) {
+        filteredList = originalList.filter((el) => !el.moderator);
+      } else if (excludeStreamer && excludeMod) {
+        filteredList = originalList.filter((el) => !el.broadcaster && !el.moderator);
+      } else {
+        filteredList = originalList.concat([]);
+      }
+      setNicknameList(filteredList);
     }
-    setNicknameList(filteredList);
   }, [excludeStreamer, excludeMod]);
 
   useEffect(() => {
@@ -137,7 +139,7 @@ function App() {
               <Col xs={10}>
                 <Form.Control
                   ref={boardUrlRef}
-                  disabled={boardUrl && isLoadingDone}
+                  disabled={isLoading && !isLoadingDone}
                   placeholder={"게시물 주소 입력"}
                   style={{ width: "100%" }}
                   onChange={() => setBoardUrl(boardUrlRef.current.value)}
@@ -147,7 +149,7 @@ function App() {
                 <Button
                   disabled={
                     !boardUrl ||
-                    (boardUrl && isLoadingDone)
+                    (boardUrl && isLoading && !isLoadingDone)
                   }
                   style={{ width: "100%" }}
                   onClick={() => getCommentList(boardUrl)}
