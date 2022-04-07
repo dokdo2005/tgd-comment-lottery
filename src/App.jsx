@@ -26,13 +26,17 @@ function App() {
   const lotteryNumberRef = useRef();
 
   const getCommentList = async (boardUrl) => {
-    const validateUrl = /https?:\/\/(www.)?tgd.kr\/s\//g.test(boardUrl);
-    if (!validateUrl) {
+    const validateUrl = /https?:\/\/(www.)?tgd.kr\/s\/s/.test(
+      boardUrl.split("?")[0]
+    );
+    const boardId = boardUrl.split("/")[5];
+    const validateBoardId = /^[1-9][0-9]{7}$/.test(boardId);
+
+    if (!validateUrl || !validateBoardId) {
       alert("올바른 주소가 아닙니다!");
     } else {
       setLoadingDone(false);
       setLoading(true);
-      const boardId = boardUrl.split("/")[5].split("?")[0];
       const commentList = await commentListApi(boardId);
       setLoadingDone(true);
       if (commentList.length === 0) {
