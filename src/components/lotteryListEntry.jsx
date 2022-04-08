@@ -1,3 +1,4 @@
+import React from "react";
 import { ListGroup } from "react-bootstrap";
 import streamerIcon from "../img/streamer_icon.png";
 import moderatorIcon from "../img/moderator_icon.png";
