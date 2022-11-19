@@ -173,9 +173,9 @@ function App() {
               ) : (
                 nicknameList.map((element) => (
                   <LotteryListEntry
-                    type={"original"}
                     entry={element}
                     deleteList={deleteCommentList}
+                    showDelete={true}
                     deleteAvailable={nicknameList.length > 1 ? true : false}
                     key={element.id}
                   />

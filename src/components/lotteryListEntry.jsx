@@ -6,7 +6,7 @@ import streamerIcon from "../img/streamer_icon.png";
 import moderatorIcon from "../img/moderator_icon.png";
 import "../css/lotteryListEntry.css";
 
-function LotteryListEntry({ type, entry, deleteList, deleteAvailable }) {
+function LotteryListEntry({ entry, deleteList, showDelete, deleteAvailable }) {
   return (
     <ListGroup.Item eventKey={entry.id} active={false}>
       <div className="listEntryArea">
@@ -23,7 +23,7 @@ function LotteryListEntry({ type, entry, deleteList, deleteAvailable }) {
           &nbsp;{entry.nickname}
         </div>
         <div className="listButtonArea">
-          {type === "original" ? (
+          {showDelete ? (
             <FontAwesomeIcon
               icon={faTrashCan}
               onClick={() => (deleteAvailable ? deleteList(entry.id) : null)}
