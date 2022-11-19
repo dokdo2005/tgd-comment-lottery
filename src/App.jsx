@@ -209,7 +209,7 @@ function App() {
                     isLoading ||
                     Number(lotteryNumber) <= 0 ||
                     !Number.isInteger(Number(lotteryNumber)) ||
-                    Number(lotteryNumber) > nicknameList.length ||
+                    Number(lotteryNumber) >= nicknameList.length ||
                     nicknameList.length <= 1
                   }
                   style={{ width: "100%" }}
