@@ -27,10 +27,9 @@ function App() {
   const lotteryNumberRef = useRef();
 
   const getCommentList = async (boardUrl) => {
-    const validateUrl = /https?:\/\/(www.)?tgd.kr\/s\/s/.test(
-      boardUrl.split("?")[0]
-    );
-    const boardId = boardUrl.split("?")[0].split("/")[5];
+    const parsedBoardUrl = boardUrl.split("?")[0];
+    const validateUrl = /https?:\/\/(www.)?tgd.kr\/s\//i.test(parsedBoardUrl);
+    const boardId = parsedBoardUrl.split("/")[5];
     const validateBoardId = /^[1-9][0-9]{7}$/.test(boardId);
 
     if (!validateUrl || !validateBoardId) {
