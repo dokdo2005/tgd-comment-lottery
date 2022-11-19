@@ -20,6 +20,7 @@ function App() {
   const [lotteryNumber, setLotteryNumber] = useState(null);
   const [excludeStreamer, setStreamerExec] = useState(false);
   const [excludeMod, setModExec] = useState(false);
+  const [onlySecret, setSecretOnly] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [isLoadingDone, setLoadingDone] = useState(false);
   const boardUrlRef = useRef();
@@ -56,8 +57,10 @@ function App() {
   };
 
   useEffect(() => {
-    setNicknameList(filterList(originalList, excludeStreamer, excludeMod));
-  }, [nicknameList, excludeStreamer, excludeMod]);
+    setNicknameList(
+      filterList(originalList, { excludeStreamer, excludeMod, onlySecret })
+    );
+  }, [excludeStreamer, excludeMod, onlySecret]);
 
   useEffect(() => {
     if (!boardUrl) {
@@ -68,6 +71,7 @@ function App() {
       setLotteryList([]);
       setStreamerExec(false);
       setModExec(false);
+      setSecretOnly(false);
       setLoadingDone(false);
     }
   }, [boardUrl]);
@@ -113,7 +117,7 @@ function App() {
                   disabled={
                     !boardUrl || (boardUrl && isLoading && !isLoadingDone)
                   }
-                  label={"목록에서 스트리머 제외하기"}
+                  label={"스트리머 제외"}
                   checked={excludeStreamer}
                   onChange={() => setStreamerExec(!excludeStreamer)}
                 />
@@ -124,9 +128,20 @@ function App() {
                   disabled={
                     !boardUrl || (boardUrl && isLoading && !isLoadingDone)
                   }
-                  label={"목록에서 매니저 제외하기"}
+                  label={"매니저 제외"}
                   checked={excludeMod}
                   onChange={() => setModExec(!excludeMod)}
+                />
+              </Col>
+              <Col>
+                <Form.Check
+                  type={"switch"}
+                  disabled={
+                    !boardUrl || (boardUrl && isLoading && !isLoadingDone)
+                  }
+                  label={"비밀 댓글만"}
+                  checked={onlySecret}
+                  onChange={() => setSecretOnly(!onlySecret)}
                 />
               </Col>
             </Row>
@@ -145,7 +160,7 @@ function App() {
                 <SpinnerComponent />
               ) : (
                 nicknameList.map((element) => (
-                  <LotteryListEntry entry={element} />
+                  <LotteryListEntry entry={element} key={element.id} />
                 ))
               )}
             </ListGroup>

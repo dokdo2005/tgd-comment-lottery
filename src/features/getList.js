@@ -9,7 +9,7 @@ export const deleteDuplicateNickname = (list) => {
     }
   }
   return newNicknameArr;
-}
+};
 
 export const getLottery = (list, count) => {
   let totalList = [];
@@ -24,22 +24,18 @@ export const getLottery = (list, count) => {
     }
   } while (totalCount < Number(count));
   return totalList;
-}
+};
 
-export const filterList = (list, excludeStreamer, excludeMod) => {
-  let filteredList = [];
+export const filterList = (
+  list,
+  { excludeStreamer, excludeMod, onlySecret }
+) => {
+  let filteredList = [...list];
   if (list.length > 0) {
-    if (excludeStreamer && !excludeMod) {
-      filteredList = list.filter((el) => !el.broadcaster);
-    } else if (!excludeStreamer && excludeMod) {
-      filteredList = list.filter((el) => !el.moderator);
-    } else if (excludeStreamer && excludeMod) {
-      filteredList = list.filter(
-        (el) => !el.broadcaster && !el.moderator
-      );
-    } else {
-      filteredList = list.concat([]);
-    }
+    if (excludeStreamer)
+      filteredList = filteredList.filter((el) => !el.broadcaster);
+    if (excludeMod) filteredList = filteredList.filter((el) => !el.moderator);
+    if (onlySecret) filteredList = filteredList.filter((el) => el.secret);
   }
   return filteredList;
-}
+};
