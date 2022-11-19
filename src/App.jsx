@@ -55,6 +55,13 @@ function App() {
     }
   };
 
+  const deleteCommentList = (id) => {
+    setNicknameList(nicknameList.filter((el) => el.id !== id));
+    setLotteryNumber(null);
+    lotteryNumberRef.current.value = null;
+    setLotteryList([]);
+  };
+
   useEffect(() => {
     setNicknameList(
       filterList(originalList, { excludeStreamer, excludeMod, onlySecret })
@@ -159,7 +166,13 @@ function App() {
                 <SpinnerComponent />
               ) : (
                 nicknameList.map((element) => (
-                  <LotteryListEntry entry={element} key={element.id} />
+                  <LotteryListEntry
+                    type={"original"}
+                    entry={element}
+                    deleteList={deleteCommentList}
+                    deleteAvailable={nicknameList.length > 1 ? true : false}
+                    key={element.id}
+                  />
                 ))
               )}
             </ListGroup>
@@ -220,7 +233,7 @@ function App() {
             ) : null}
             <ListGroup>
               {lotteryList.map((element) => (
-                <LotteryListEntry entry={element} />
+                <LotteryListEntry entry={element} key={element.id} />
               ))}
             </ListGroup>
           </Col>
