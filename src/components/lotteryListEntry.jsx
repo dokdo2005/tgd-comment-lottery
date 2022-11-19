@@ -1,5 +1,5 @@
 import React from "react";
-import { ListGroup, Button } from "react-bootstrap";
+import { ListGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import streamerIcon from "../img/streamer_icon.png";
@@ -24,13 +24,11 @@ function LotteryListEntry({ type, entry, deleteList, deleteAvailable }) {
         </div>
         <div className="listButtonArea">
           {type === "original" ? (
-            <Button
-              variant="danger"
-              disabled={!deleteAvailable}
-              onClick={() => deleteList(entry.id)}
-            >
-              <FontAwesomeIcon icon={faTrashCan} />
-            </Button>
+            <FontAwesomeIcon
+              icon={faTrashCan}
+              onClick={() => (deleteAvailable ? deleteList(entry.id) : null)}
+              style={{ color: deleteAvailable ? "red" : "grey" }}
+            />
           ) : null}
         </div>
       </div>
