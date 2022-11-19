@@ -45,7 +45,13 @@ function App() {
         setLoadingDone(false);
       } else {
         const newNicknameArr = deleteDuplicateNickname(commentList);
-        setNicknameList(newNicknameArr);
+        setNicknameList(
+          filterList(newNicknameArr, {
+            excludeStreamer,
+            excludeMod,
+            onlySecret,
+          })
+        );
         setOriginalList(newNicknameArr);
         setLotteryNumber(null);
         lotteryNumberRef.current.value = null;
