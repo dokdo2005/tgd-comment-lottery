@@ -1,7 +1,7 @@
 {
   "name": "트게더 댓글 추첨기",
   "author": "김뷰엘",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "트게더 게시물에 달린 댓글을 가지고 추첨을 할 수 있는 확장 프로그램입니다.",
   "manifest_version": 3,
   "action": {},
