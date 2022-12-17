@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Button, Col, Form, Row, ListGroup, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileDownload, faShuffle } from "@fortawesome/free-solid-svg-icons";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { commentListApi } from "./features/api";
 import {
   deleteDuplicateNickname,
@@ -246,8 +247,15 @@ function App() {
         </Row>
       </Container>
       <div className="footer">
-        <div>&nbsp;</div>
         <div>Made by 김뷰엘 with ❤️</div>
+        <div>
+          <a
+            href="https://github.com/dokdo2005/tgd-comment-lottery"
+            target={"_blank"}
+          >
+            <FontAwesomeIcon icon={faGithub} color={"black"} />
+          </a>
+        </div>
       </div>
     </div>
   );
